@@ -68,8 +68,8 @@ import eu.medsea.mimeutil.MimeUtil;
  * <p>
  * We extended the string type rule which allows you to match strings in a file
  * where you do not know the actual offset of the string containing magic file
- * information it goes something like “what I am looking for will be ‘somewhere’
- * within the next n characters” from this location. This is an important
+ * information it goes something like "what I am looking for will be 'somewhere'
+ * within the next n characters" from this location. This is an important
  * improvement to the string matching rules especially for text based documents
  * such as HTML and XML formats. The reasoning for this was that the rules for
  * matching SVG images defined in the original 'magic.mime' file hardly ever
@@ -77,7 +77,7 @@ import eu.medsea.mimeutil.MimeUtil;
  * format. As XML documents generally have an XML declaration that can contain
  * various optional attributes the length of this header often cannot be
  * determined, therefore we cannot know that the DOCTYPE declaration for an SVG
- * xml file starts at “this” location, all we can say is that, if this is an SVG
+ * xml file starts at "this" location, all we can say is that, if this is an SVG
  * xml file then it will have an SVG DOCTYPE somewhere near the beginning of the
  * file and probably within the first 1024 characters. So we test for the xml
  * declaration and then we test for the DOCTYPE within a specified number of
