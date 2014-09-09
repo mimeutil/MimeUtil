@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+// Add groovy-nature (Groovy DSL Support,...)
+// Allows adding "Groovy Classes" and "Groovy Test Cases" in Eclipse
+apply plugin: 'groovy'
+
+repositories {
+//	maven { url "http://repo1.maven.org/maven2" }
+	mavenCentral()
+}
+
+def spockVersion = '0.7-groovy-2.0'
+
+dependencies {
+	compile 'log4j:log4j:1.2.14'
+	compile 'org.slf4j:slf4j-api:1.5.6'
+	compile 'org.slf4j:slf4j-log4j12:1.5.6'
+	testCompile 'junit:junit:4.8.1'
+	// Also causes the import of Groovy libraries to the build-path in eclipse
+	testCompile "org.spockframework:spock-core:$spockVersion"
+	
+}
