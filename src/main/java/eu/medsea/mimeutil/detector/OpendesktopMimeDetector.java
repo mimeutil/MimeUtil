@@ -784,24 +784,3 @@ public class OpendesktopMimeDetector extends MimeDetector {
 		}
 	}
 }
-
-abstract class FileWatcher extends TimerTask {
-	private long timeStamp;
-	private File file;
-
-	public FileWatcher(File file) {
-		this.file = file;
-		this.timeStamp = file.lastModified();
-	}
-
-	public final void run() {
-		long timeStamp = file.lastModified();
-		// Only do this if the file timestamp has changed
-		if (this.timeStamp != timeStamp) {
-			this.timeStamp = timeStamp;
-			onChange(file);
-		}
-	}
-
-	protected abstract void onChange(File file);
-}
