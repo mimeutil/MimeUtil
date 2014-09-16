@@ -8,6 +8,9 @@
 *.classpath
 *.project
 
+# Eclipse (CheckStyle plugin)
+.checkstyle
+
 # Gradle
 build/
 .gradle/
