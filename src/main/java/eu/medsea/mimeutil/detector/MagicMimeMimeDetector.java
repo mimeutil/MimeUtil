@@ -142,19 +142,19 @@ import eu.medsea.mimeutil.MimeUtil;
  */
 public class MagicMimeMimeDetector extends MimeDetector {
 
-	private static Logger log = LoggerFactory.getLogger(MagicMimeMimeDetector.class);
+	private Logger log = LoggerFactory.getLogger(MagicMimeMimeDetector.class);
 
 	// Having the defaultLocations as protected allows you to subclass this class
 	// and add different paths or remove them all so that the internal file is always used
-	protected static String[] defaultLocations = { "/usr/share/mimelnk/magic",
+	protected String[] defaultLocations = { "/usr/share/mimelnk/magic",
 			"/usr/share/file/magic.mime", "/etc/magic.mime" };
-	private static List magicMimeFileLocations = Arrays
+	private List magicMimeFileLocations = Arrays
 			.asList(defaultLocations);
 
-	private static ArrayList mMagicMimeEntries = new ArrayList();
+	private ArrayList mMagicMimeEntries = new ArrayList();
 
 	public MagicMimeMimeDetector() {
-		MagicMimeMimeDetector.initMagicRules();
+		initMagicRules();
 	}
 
 	public String getDescription() {
@@ -267,7 +267,7 @@ public class MagicMimeMimeDetector extends MimeDetector {
 	 * we are unable to locate any of the files in steps 2 - 5 above Thanks go
 	 * to Simon Pepping for his bug report
 	 */
-	private static void initMagicRules() {
+	private void initMagicRules() {
 		InputStream in = null;
 
 		// Try to locate a magic.mime file locate by system property magic-mime
@@ -399,7 +399,7 @@ public class MagicMimeMimeDetector extends MimeDetector {
 		}
 	}
 
-	private static void parseMagicMimeFileLocation(final String location) {
+	private void parseMagicMimeFileLocation(final String location) {
 		InputStream is = null;
 
 		List magicMimeFiles = getMagicFilesFromMagicMimeFileLocation(location);
@@ -423,7 +423,7 @@ public class MagicMimeMimeDetector extends MimeDetector {
 		}
 	}
 
-	private static List getMagicFilesFromMagicMimeFileLocation(
+	private List getMagicFilesFromMagicMimeFileLocation(
 			final String magicMimeFileLocation) {
 		List magicMimeFiles = new LinkedList();
 		if (magicMimeFileLocation.indexOf('*') < 0) {
@@ -467,7 +467,7 @@ public class MagicMimeMimeDetector extends MimeDetector {
 	}
 
 	// Parse the magic.mime file
-	private static void parse(final String magicFile, final Reader r)
+	private void parse(final String magicFile, final Reader r)
 			throws IOException {
 		long start = System.currentTimeMillis();
 
@@ -525,7 +525,7 @@ public class MagicMimeMimeDetector extends MimeDetector {
 					+ (System.currentTimeMillis() - start) + " msec.");
 	}
 
-	private static void addEntry(final String magicFile, final long lineNumber,
+	private void addEntry(final String magicFile, final long lineNumber,
 			final ArrayList aStringArray) {
 		try {
 			MagicMimeEntry magicEntry = new MagicMimeEntry(aStringArray);
