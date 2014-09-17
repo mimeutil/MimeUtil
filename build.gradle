@@ -5,6 +5,8 @@ apply plugin: 'eclipse'
 // Allows adding "Groovy Classes" and "Groovy Test Cases" in Eclipse
 apply plugin: 'groovy'
 
+group = "de.eddyson"
+
 repositories {
 //	maven { url "http://repo1.maven.org/maven2" }
 	mavenCentral()
