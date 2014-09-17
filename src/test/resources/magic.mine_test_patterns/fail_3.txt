@@ -1,0 +1,5 @@
+# Failing (But somehow accepted by ´file´):
+# ----------------------------------------------------------
+# Read-length too short (must be at least 9).
+############################################################
+2 regex>8<	[0-9]{4}@[a-d]{4} text/x-MimeUtil-RegExp

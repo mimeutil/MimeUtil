@@ -46,7 +46,11 @@ class MagicMimeEntry {
 	public static final int BESHORT_TYPE = 5;
 	public static final int LESHORT_TYPE = 6;
 	public static final int BYTE_TYPE = 7;
+	public static final int REGEX_TYPE = 19;
 	public static final int UNKNOWN_TYPE = 20;
+	
+	/** Default number of bytes to be read for matching a regular expression. */
+	private static final int DEFAULT_REGEX_READ_LENGTH = 4096;
 
 	private ArrayList subEntries = new ArrayList();
 	private int checkBytesFrom;
@@ -292,6 +296,8 @@ class MagicMimeEntry {
 			return LESHORT_TYPE;
 		} else if (tok.equals("byte")) {
 			return BYTE_TYPE;
+		} else if (tok.startsWith("regex")) {
+			return REGEX_TYPE;
 		}
 
 		return UNKNOWN_TYPE;
@@ -397,7 +403,62 @@ class MagicMimeEntry {
 
 		return null;
 	}
-
+	
+	/**
+	 * Returns the number of bytes that will be read for a String comparison.
+	 * This is either the number of bytes given via the magic-type (e.g. "string>1024<")
+	 * or the length or the String.
+	 * 
+	 * @return number of bytes.
+	 */
+	private int getLengthToReadForStringComparison() {
+		int len = 0;
+		// The following is not documented in the Magic(5)
+		// documentation.
+		// This is an extension to the magic rules and is provided by
+		// this utility.
+		// It allows for better matching of some text based files such
+		// as XML files
+		int index = typeStr.indexOf(">");
+		if (index != -1) {
+			len = Integer.parseInt(typeStr.substring(index + 1, typeStr
+					.length() - 1));
+			isBetween = true;
+		} else {
+			if (getContent() != null) // TODO content should never be null!
+				// We should already prevent this
+				// when parsing the magic file.
+			len = getContent().length();
+		}
+		return len;
+	}
+	
+	/**
+	 * Returns the number of bytes that will be read for matching a regular expression.
+	 * This is either the number of bytes given via the magic-type (e.g. "regex>1024<")
+	 * or an arbitrary value of 4096 bytes (i.e. 4 kB).
+	 * 
+	 * @return number of bytes.
+	 */
+	private int getLengthToReadForRegExMatching() {
+		int len = 0;
+		// The following is not documented in the Magic(5)
+		// documentation.
+		// This is an extension to the magic rules and is provided by
+		// this utility.
+		// It allows for better matching of some text based files such
+		// as XML files
+		int index = typeStr.indexOf(">");
+		if (index != -1) {
+			len = Integer.parseInt(typeStr.substring(index + 1, typeStr
+					.length() - 1));
+			isBetween = true;
+		} else {
+			len = DEFAULT_REGEX_READ_LENGTH;
+		}
+		return len;
+	}
+	
 	/*
 	 * private methods for reading to local buffer
 	 */
@@ -410,22 +471,15 @@ class MagicMimeEntry {
 		ByteBuffer buf = null;
 		try {
 			switch (getType()) {
+				case MagicMimeEntry.REGEX_TYPE: {
+					int len = this.getLengthToReadForRegExMatching();
+					buf = ByteBuffer.allocate(len);
+					buf.put(content, startPos, len);
+					break;
+				}
+				
 				case MagicMimeEntry.STRING_TYPE: {
-					int len = 0;
-					// The following is not documented in the Magic(5)
-					// documentation.
-					// This is an extension to the magic rules and is provided by
-					// this utility.
-					// It allows for better matching of some text based files such
-					// as XML files
-					int index = typeStr.indexOf(">");
-					if (index != -1) {
-						len = Integer.parseInt(typeStr.substring(index + 1, typeStr
-								.length() - 1));
-						isBetween = true;
-					} else {
-						len = getContent().length();
-					}
+					int len = this.getLengthToReadForStringComparison();
 					buf = ByteBuffer.allocate(len);
 					buf.put(content, startPos, len);
 					break;
@@ -471,21 +525,15 @@ class MagicMimeEntry {
 		raf.seek(startPos);
 		ByteBuffer buf;
 		switch (getType()) {
+		case MagicMimeEntry.REGEX_TYPE: {
+			int len = this.getLengthToReadForRegExMatching();
+			buf = ByteBuffer.allocate(len);
+			raf.read(buf.array(), 0, len);
+			break;
+		}
+
 		case MagicMimeEntry.STRING_TYPE: {
-			int len = 0;
-			// The following is not documented in the Magic(5) documentation.
-			// This is an extension to the magic rules and is provided by this
-			// utility.
-			// It allows for better matching of some text based files such as
-			// XML files
-			int index = typeStr.indexOf(">");
-			if (index != -1) {
-				len = Integer.parseInt(typeStr.substring(index + 1, typeStr
-						.length() - 1));
-				isBetween = true;
-			} else {
-				len = getContent().length();
-			}
+			int len = this.getLengthToReadForStringComparison();
 			buf = ByteBuffer.allocate(len);
 			raf.read(buf.array(), 0, len);
 			break;
@@ -534,20 +582,13 @@ class MagicMimeEntry {
 
 	private int _getInputStreamMarkLength() {
 		switch (getType()) {
+		case MagicMimeEntry.REGEX_TYPE: {
+			int len = this.getLengthToReadForRegExMatching();
+			return getCheckBytesFrom() + len + 1;
+		}
+		
 		case MagicMimeEntry.STRING_TYPE: {
-			int len = 0;
-			// Lets check if its a between test
-			int index = typeStr.indexOf(">");
-			if (index != -1) {
-				len = Integer.parseInt(typeStr.substring(index + 1, typeStr
-						.length() - 1));
-				isBetween = true;
-			} else {
-				if (getContent() != null) // TODO content should never be null!
-											// We should already prevent this
-											// when parsing the magic file.
-					len = getContent().length();
-			}
+			int len = this.getLengthToReadForStringComparison();
 			return getCheckBytesFrom() + len + 1;
 		}
 
@@ -582,6 +623,11 @@ class MagicMimeEntry {
 		switch (getType()) {
 		case MagicMimeEntry.STRING_TYPE: {
 			matches = matchString(buf);
+			break;
+		}
+
+		case MagicMimeEntry.REGEX_TYPE: {
+			matches = matchRegEx(buf);
 			break;
 		}
 
@@ -654,6 +700,20 @@ class MagicMimeEntry {
 			return buffer.compareTo(getContent()) < 0;
 		} else
 			return false;
+	}
+
+	/**
+	 * Checks if a regular expression has a match within the String of interest.
+	 * 
+	 * @param bbuf Buffer containing the bytes that were read according to the magic-declaration.
+	 * @return 
+	 * @throws IOException
+	 */
+	private boolean matchRegEx(ByteBuffer bbuf) throws IOException {
+		String buffer = new String(bbuf.array());
+		// As in `file` the ".*" is hard-coded.
+		// The DOTALL flag "(?s)" makes dots also match newlines.
+		return buffer.matches("(?s).*" + this.content + ".*");
 	}
 
 	private long getMask(String maskString) {

@@ -1,0 +1,5 @@
+# Passing (Also somehow accepted by ´file´)
+# ----------------------------------------------------------
+# Test regular expression with offset and read-length.
+############################################################
+2 regex>10<	[0-9]{4}@[a-d]{4} text/x-MimeUtil-RegExp
