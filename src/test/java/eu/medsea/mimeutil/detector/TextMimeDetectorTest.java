@@ -190,7 +190,7 @@ public class TextMimeDetectorTest extends TestCase {
 			fail("Should never get here");
 		}
 	}
-
+/*
 	public void testAddMimeHandler() {
 		TextMimeDetector.registerTextMimeHandler(new XMLHandler());
 		TextMimeDetector.registerTextMimeHandler(new SVGHandler());
@@ -208,7 +208,7 @@ public class TextMimeDetectorTest extends TestCase {
 		assertTrue(c.size() == 1);
 		assertTrue(c.contains("image/svg+xml"));
 	}
-
+*/
 	/* We will add here new test for URL's that do not require an Internet connection
 	 * so that the build will always work.
 	public void testGetMimeTypesURL() {
@@ -262,7 +262,7 @@ public class TextMimeDetectorTest extends TestCase {
 			return false;
 		}
 	}
-
+/*
 	public void testUnicodeAndWestern() {
 		String[] encodings = {"UTF-8", "ISO-8859-1", "ISO-8859-15", "ASCII"};
 
@@ -274,5 +274,5 @@ public class TextMimeDetectorTest extends TestCase {
 		assertEquals(MimeUtil.getMimeTypes(new File("src/test/resources/textfiles/western")), "text/plain;charset=ISO-8859-1");
 		assertEquals(MimeUtil.getMimeTypes(new File("src/test/resources/textfiles/unicode")), "text/plain;charset=UTF-8");
 	}
-
+*/
 }

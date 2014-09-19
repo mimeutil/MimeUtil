@@ -106,16 +106,14 @@ public final class TextMimeDetector extends MimeDetector {
 	// No text file should have 2 or more consecutive NULL values
 	private static final int MAX_NULL_VALUES = 1;
 
-	private static Collection preferredEncodings = new ArrayList();
-	static {
-		TextMimeDetector.setPreferredEncodings(new String [] {"UTF-16", "UTF-8", "ISO-8859-1", "windows-1252", "US-ASCII"} );
-	}
+	private Collection preferredEncodings = new ArrayList();
 
 	// Registered list of TextMimeHandler(s)
-	private static Collection handlers = new ArrayList();
+	private Collection handlers = new ArrayList();
 
 	// Private so nobody can register one using the MimeUtil.registerMimeDetector(...) method
 	private TextMimeDetector() {
+		this.setPreferredEncodings(new String [] {"UTF-16", "UTF-8", "ISO-8859-1", "windows-1252", "US-ASCII"} );
 	}
 
 	// Package scoped so that the class can still be create for use by mime-util without resorting to a singleton approach
@@ -261,7 +259,7 @@ public final class TextMimeDetector extends MimeDetector {
 
 		String encoding = null;
 		// Iterate over the preferedEncodings array in the order defined and return the first one found
-		for(Iterator it = TextMimeDetector.preferredEncodings.iterator(); it.hasNext();) {
+		for(Iterator it = this.preferredEncodings.iterator(); it.hasNext();) {
 			encoding = (String)it.next();
 			if(possibleEncodings.contains(encoding)) {
 				mimeTypes.add(new TextMimeType("text/plain", encoding));
@@ -310,10 +308,10 @@ public final class TextMimeDetector extends MimeDetector {
 	 *
 	 * @param encodings String array of canonical encoding names.
 	 */
-	public static void setPreferredEncodings(String [] encodings) {
-		TextMimeDetector.preferredEncodings = EncodingGuesser.getValidEncodings(encodings);
+	private void setPreferredEncodings(String [] encodings) {
+		this.preferredEncodings = EncodingGuesser.getValidEncodings(encodings);
 		if(log.isDebugEnabled()) {
-			log.debug("Preferred Encodings set to " + TextMimeDetector.preferredEncodings);
+			log.debug("Preferred Encodings set to " + this.preferredEncodings);
 		}
 	}
 
@@ -321,24 +319,24 @@ public final class TextMimeDetector extends MimeDetector {
 	 * Register a TexMimeHandler(s)
 	 * @param handler to register
 	 */
-	public static void registerTextMimeHandler(TextMimeHandler handler) {
-		handlers.add(handler);
+	public void registerTextMimeHandler(TextMimeHandler handler) {
+		this.handlers.add(handler);
 	}
 
 	/**
 	 * Unregister a TextMimeHandler
 	 * @param handler to unregister
 	 */
-	public static void unregisterTextMimeHandler(TextMimeHandler handler) {
-		handlers.remove(handler);
+	public void unregisterTextMimeHandler(TextMimeHandler handler) {
+		this.handlers.remove(handler);
 	}
 
 	/**
 	 * Get the current Collection of registered TexMimeHandler(s)
 	 * @return currently registered collection of TextMimeHandler(s)
 	 */
-	public static Collection getRegisteredTextMimeHandlers() {
-		return handlers;
+	public Collection getRegisteredTextMimeHandlers() {
+		return this.handlers;
 	}
 
 	/**
