@@ -11,6 +11,10 @@
 # Eclipse (CheckStyle plugin)
 .checkstyle
 
+# Eclipse (PMD plugin)
+.pmd
+reports/
+
 # Gradle
 build/
 .gradle/
