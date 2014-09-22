@@ -14,9 +14,9 @@ import junit.framework.TestCase;
 
 public class MimeUtil2Test extends TestCase {
 
-	private static Collection UNKNOWN_MIME_TYPE_COLLECTION = new MimeTypeHashSet();
+	private static final Collection UNKNOWN_MIME_TYPE_COLLECTION = new MimeTypeHashSet();
 
-	private static MimeType UNKNOWN_MIME_TYPE = new MimeType("application/octet-stream");
+	private static final MimeType UNKNOWN_MIME_TYPE = new MimeType("application/octet-stream");
 
 	MimeUtil2 mimeUtil = new MimeUtil2();
 

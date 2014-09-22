@@ -191,11 +191,11 @@ class MimeTypeHashSet implements Set, Collection {
 	 * @param arg0 is a collection of objects each of which should contain or be items that can be used to represent mime types.
 	 * Objects that are not recognised as being able to represent a mime type are ignored.
 	 * @return true if this collection changed as a result of the call.
-	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
 	 */
-	public boolean addAll(final Collection arg0) throws NullPointerException {
+	public boolean addAll(final Collection arg0) throws IllegalArgumentException {
 		if(arg0 == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 		}
 		boolean added = false;
 		for(Iterator it = arg0.iterator(); it.hasNext();) {
@@ -254,12 +254,12 @@ class MimeTypeHashSet implements Set, Collection {
 	 * Checks that this Collection contains this collection of object that can represent mime types.
 	 * See the introduction to this class for a description of these types.
 	 * @param arg0 a collection of objects each of which can be a type that can represent a mime type
-	 * @ return true if this collection contains all of the elements in the specified collection.
-	 * @ throws NullPointerException if the passed in argument in null.
+	 * @return true if this collection contains all of the elements in the specified collection.
+	 * @throws IllegalArgumentException if the passed in argument in null.
 	 */
 	public boolean containsAll(final Collection arg0) {
 		if(arg0 == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 		}
 		for(Iterator it = arg0.iterator(); it.hasNext();){
 			if(!contains(it.next())) {
@@ -322,11 +322,11 @@ class MimeTypeHashSet implements Set, Collection {
 	 * Remove all the items in the passed in Collection that can represent a mime type.
 	 * See the introduction of this class to see the types of objects the passed in collection can contain.
 	 * @return true if the set was modified.
-	 * @throws NullPointerException if the Collection passed in is null
+	 * @throws IllegalArgumentException if the Collection passed in is null
 	 */
 	public boolean removeAll(final Collection arg0) {
 		if(arg0 == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 		}
 		boolean removed = false;
 		for(Iterator it = ((Collection)arg0).iterator(); it.hasNext();) {
@@ -346,7 +346,7 @@ class MimeTypeHashSet implements Set, Collection {
 	 */
 	public boolean retainAll(final Collection arg0) {
 		if(arg0 == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 		}
 		// Make sure our collection is a real collection of MimeType(s)
 		Collection c = new MimeTypeHashSet(arg0);

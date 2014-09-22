@@ -57,7 +57,7 @@ public class WindowsRegistryMimeDetector extends MimeDetector {
 	private static final String REG_QUERY = "reg query ";
 	private static final String CONTENT_TYPE = "\"Content Type\"";
 
-	private static final boolean isWindows = System.getProperty("os.name").startsWith("Windows");
+	private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
 
 	public String getDescription() {
 		return "Get the MIME types of file extensions from the Windows Registry. Will be inafective on non-Windows machines.";
@@ -80,7 +80,7 @@ public class WindowsRegistryMimeDetector extends MimeDetector {
 	public Collection getMimeTypesURL(URL url)
 			throws UnsupportedOperationException {
 		Collection mimeTypes = new ArrayList();
-		if(!isWindows) {
+		if(!IS_WINDOWS) {
 			return mimeTypes;
 		}
 
@@ -158,4 +158,10 @@ public class WindowsRegistryMimeDetector extends MimeDetector {
 			return sw.toString();
 		}
 	}
+
+	@Override
+	public void init() {}
+
+	@Override
+	public void delete() {}
 }

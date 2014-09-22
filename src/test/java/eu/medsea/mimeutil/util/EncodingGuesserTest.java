@@ -34,12 +34,12 @@ public class EncodingGuesserTest extends TestCase {
 		EncodingGuesser.setSupportedEncodings(new ArrayList());
 	}
 
-	public void test_UTF_8_EncodingWithAndWithoutBOM() {
+	public void testUTF8EncodingWithAndWithoutBOM() {
 
-		byte [] utf8_bom = new byte [] {(byte)0xEF, (byte)0xBB, (byte)0xBF};
+		byte [] utf8bom = new byte [] {(byte)0xEF, (byte)0xBB, (byte)0xBF};
 		String message = "This is a message which should always be in UTF-8 format because of javas unicode strings.";
 
-		byte [] data = concatenateByteArrays(utf8_bom, message.getBytes());
+		byte [] data = concatenateByteArrays(utf8bom, message.getBytes());
 
 		Collection encodings = EncodingGuesser.getPossibleEncodings(data);
 		assertTrue(encodings.size() == 1);
@@ -93,7 +93,7 @@ public class EncodingGuesserTest extends TestCase {
 				assertTrue(possibleEncodings.contains("UTF-8"));
 			}
 
-			long time_1 = (new Date().getTime()) - now.getTime();
+			long time1 = (new Date().getTime()) - now.getTime();
 
 
 
@@ -121,14 +121,14 @@ public class EncodingGuesserTest extends TestCase {
 				assertTrue(possibleEncodings.contains("windows-1251"));
 			}
 
-			long time_2 = (new Date().getTime()) - now.getTime();
+			long time2 = (new Date().getTime()) - now.getTime();
 
 			// The time difference should be quite significant.
 			// On my machine just for these eight files the times recorder were
 			// time_1 was approximately=320 and time_2 was approximately=0
 			// These were fairly consistent.
 
-			assertTrue(time_2 < time_1);
+			assertTrue(time2 < time1);
 
 		}catch(Exception e) {
 			fail("Should not get here.");

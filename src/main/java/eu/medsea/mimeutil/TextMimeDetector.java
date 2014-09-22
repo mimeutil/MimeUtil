@@ -388,6 +388,12 @@ public final class TextMimeDetector extends MimeDetector {
 		}
 		return false;
 	}
+
+	@Override
+	public void init() {}
+
+	@Override
+	public void delete() {}
 }
 
 

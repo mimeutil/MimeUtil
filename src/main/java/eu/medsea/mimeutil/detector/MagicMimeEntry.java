@@ -570,7 +570,7 @@ class MagicMimeEntry {
 	}
 
 	private int getInputStreamMarkLength() {
-		int len = _getInputStreamMarkLength();
+		int len = getInputStreamMarkLength2();
 		for (Iterator it = subEntries.iterator(); it.hasNext();) {
 			MagicMimeEntry subEntry = (MagicMimeEntry) it.next();
 			int subLen = subEntry.getInputStreamMarkLength();
@@ -580,7 +580,7 @@ class MagicMimeEntry {
 		return len;
 	}
 
-	private int _getInputStreamMarkLength() {
+	private int getInputStreamMarkLength2() {
 		switch (getType()) {
 		case MagicMimeEntry.REGEX_TYPE: {
 			int len = this.getLengthToReadForRegExMatching();
@@ -731,7 +731,7 @@ class MagicMimeEntry {
 	}
 
 	private boolean matchByte(ByteBuffer bbuf) throws IOException {
-		short found = (short) ((bbuf.get(0) & 0xff) & (short)getMask(typeStr));
+		int found = (int) ((bbuf.get(0) & 0xff) & (int)getMask(typeStr));
 
 		if (operation.equals(MagicMimeEntryOperation.EQUALS)) {
 			return found == contentNumber;

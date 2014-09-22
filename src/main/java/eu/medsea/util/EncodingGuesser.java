@@ -211,13 +211,13 @@ public class EncodingGuesser {
 	 * @return true if at least one of the encodings was removed else false
 	 */
 	public static boolean removeEncodings(String [] encodings) {
-		boolean removedAtLeast_1 = false;
+		boolean removedAtLeast1 = false;
 		for(int i = 0; i < encodings.length; i++) {
 			if(removeEncoding(encodings[i])) {
-				removedAtLeast_1 = true;
+				removedAtLeast1 = true;
 			}
 		}
-		return removedAtLeast_1;
+		return removedAtLeast1;
 	}
 
 	/**

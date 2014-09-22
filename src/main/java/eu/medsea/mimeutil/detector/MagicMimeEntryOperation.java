@@ -29,7 +29,7 @@ import java.util.Map;
  */
 final class MagicMimeEntryOperation
 {
-	private static final Map operationID2operation = new HashMap();
+	private static final Map OPERATION_ID_2_OPERATION = new HashMap();
 
 	public static final MagicMimeEntryOperation EQUALS = new MagicMimeEntryOperation('=');
 	public static final MagicMimeEntryOperation LESS_THAN = new MagicMimeEntryOperation('<');
@@ -43,7 +43,7 @@ final class MagicMimeEntryOperation
 	public static MagicMimeEntryOperation getOperation(char operationID)
 	{
 		Character operationIDCharacter = new Character(operationID);
-		return (MagicMimeEntryOperation) operationID2operation.get(operationIDCharacter);
+		return (MagicMimeEntryOperation) OPERATION_ID_2_OPERATION.get(operationIDCharacter);
 	}
 
 	public static MagicMimeEntryOperation getOperationForStringField(String content)
@@ -75,10 +75,10 @@ final class MagicMimeEntryOperation
 
 	private static void registerOperation(MagicMimeEntryOperation operation) {
 		Character operationIDCharacter = new Character(operation.getOperationID());
-		if (operationID2operation.containsKey(operationIDCharacter))
+		if (OPERATION_ID_2_OPERATION.containsKey(operationIDCharacter))
 			throw new IllegalStateException("Duplicate registration of operation " + operationIDCharacter);
 
-		operationID2operation.put(operationIDCharacter, operation);
+		OPERATION_ID_2_OPERATION.put(operationIDCharacter, operation);
 	}
 
 	private final char operationID;

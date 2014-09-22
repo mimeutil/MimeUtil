@@ -176,7 +176,7 @@ public class OpendesktopMimeDetector extends MimeDetector {
 	public Collection getMimeTypesURL(URL url) {
 
 		Collection mimeTypes = getMimeTypesFileName(url.getPath());
-		return _getMimeTypes(mimeTypes, getInputStream(url));
+		return getMimeTypes2(mimeTypes, getInputStream(url));
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class OpendesktopMimeDetector extends MimeDetector {
 		if (!file.exists()) {
 			return mimeTypes;
 		}
-		return _getMimeTypes(mimeTypes, getInputStream(file));
+		return getMimeTypes2(mimeTypes, getInputStream(file));
 	}
 
 	/**
@@ -427,11 +427,11 @@ public class OpendesktopMimeDetector extends MimeDetector {
 		// any duplicates by copying entries to a HashSet that can only have a
 		// single instance
 		// of each type
-		Collection _mimeTypes = new HashSet();
+		Collection mimeTypes2 = new HashSet();
 		for (Iterator it = mimeTypes.iterator(); it.hasNext();) {
-			_mimeTypes.add(((WeightedMimeType) it.next()).toString());
+			mimeTypes2.add(((WeightedMimeType) it.next()).toString());
 		}
-		return _mimeTypes;
+		return mimeTypes2;
 	}
 
 	private void lookupMimeTypesForGlobFileName(String fileName,
@@ -567,21 +567,21 @@ public class OpendesktopMimeDetector extends MimeDetector {
 	private boolean isMimeTypeSubclass(String mimeType, String subClass) {
 		String umimeType = unaliasMimeType(mimeType);
 		String usubClass = unaliasMimeType(subClass);
-		MimeType _mimeType = new MimeType(umimeType);
-		MimeType _subClass = new MimeType(usubClass);
+		MimeType mimeType2 = new MimeType(umimeType);
+		MimeType subClass2 = new MimeType(usubClass);
 
 		if (umimeType.compareTo(usubClass) == 0) {
 			return true;
 		}
 
 		if (isSuperType(usubClass)
-				&& (_mimeType.getMediaType().equals(_subClass.getMediaType()))) {
+				&& (mimeType2.getMediaType().equals(subClass2.getMediaType()))) {
 			return true;
 		}
 
 		// Handle special cases text/plain and application/octet-stream
 		if (usubClass.equals("text/plain")
-				&& _mimeType.getMediaType().equals("text")) {
+				&& mimeType2.getMediaType().equals("text")) {
 			return true;
 		}
 
@@ -603,8 +603,8 @@ public class OpendesktopMimeDetector extends MimeDetector {
 				max = med - 1;
 			} else {
 				offset = content.getInt((parentListOffset + 4) + (8 * med) + 4);
-				int _numParents = content.getInt(offset);
-				for (int i = 0; i < _numParents; i++) {
+				int numParents2 = content.getInt(offset);
+				for (int i = 0; i < numParents2; i++) {
 					int parentOffset = content.getInt((offset + 4) + (4 * i));
 					if (isMimeTypeSubclass(getMimeType(parentOffset), usubClass)) {
 						return true;
@@ -660,11 +660,11 @@ public class OpendesktopMimeDetector extends MimeDetector {
 		return content.getInt(4);
 	}
 
-	private short getMinorVersion() {
+	private int getMinorVersion() {
 		return content.getShort(2);
 	}
 
-	private short getMajorVersion() {
+	private int getMajorVersion() {
 		return content.getShort(0);
 	}
 
@@ -724,30 +724,30 @@ public class OpendesktopMimeDetector extends MimeDetector {
 		}
 	}
 
-	private Collection _getMimeTypes(Collection mimeTypes, InputStream in) {
+	private Collection getMimeTypes2(Collection mimeTypes, InputStream in) {
 
 		try {
 			if (mimeTypes.isEmpty() || mimeTypes.size() > 1) {
-				Collection _mimeTypes = getMimeTypesInputStream(in = new BufferedInputStream(
+				Collection mimeTypes2 = getMimeTypesInputStream(in = new BufferedInputStream(
 						in));
 
-				if (!_mimeTypes.isEmpty()) {
+				if (!mimeTypes2.isEmpty()) {
 					if (!mimeTypes.isEmpty()) {
 						// more than one glob matched
 
 						// Check for same mime type
 						for (Iterator it = mimeTypes.iterator(); it.hasNext();) {
 							String mimeType = (String) it.next();
-							if (_mimeTypes.contains(mimeType)) {
+							if (mimeTypes2.contains(mimeType)) {
 								// mimeTypes = new ArrayList();
 								mimeTypes.add(mimeType);
 								// return mimeTypes;
 							}
 							// Check for mime type subtype
-							for (Iterator _it = _mimeTypes.iterator(); _it
+							for (Iterator it2 = mimeTypes2.iterator(); it2
 									.hasNext();) {
-								String _mimeType = (String) _it.next();
-								if (isMimeTypeSubclass(mimeType, _mimeType)) {
+								String mimeType2 = (String) it2.next();
+								if (isMimeTypeSubclass(mimeType, mimeType2)) {
 									// mimeTypes = new ArrayList();
 									mimeTypes.add(mimeType);
 									// return mimeTypes;
@@ -756,7 +756,7 @@ public class OpendesktopMimeDetector extends MimeDetector {
 						}
 					} else {
 						// No globs matched but we have magic matches
-						return _mimeTypes;
+						return mimeTypes2;
 					}
 				}
 			}
@@ -783,4 +783,7 @@ public class OpendesktopMimeDetector extends MimeDetector {
 					+ (i * 8))));
 		}
 	}
+
+	@Override
+	public void init() {}
 }

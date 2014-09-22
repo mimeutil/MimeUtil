@@ -37,7 +37,7 @@ public class MimeType implements Comparable, Serializable {
 
 	private static final long serialVersionUID = -1324243127744494894L;
 
-	private static final Pattern mimeSplitter = Pattern.compile ("[/;]++" );
+	private static final Pattern MIME_SPLITTER = Pattern.compile ("[/;]++" );
 
 	protected String mediaType = "*";
 	protected String subType = "*";
@@ -67,7 +67,7 @@ public class MimeType implements Comparable, Serializable {
 		if(mimeType == null || mimeType.trim().length() == 0){
 			throw new MimeException("Invalid MimeType [" + mimeType + "]");
 		}
-		String [] parts = mimeSplitter.split(mimeType.trim());
+		String [] parts = MIME_SPLITTER.split(mimeType.trim());
 
 		if(parts.length > 0) {
 			// Treat as the mediaType

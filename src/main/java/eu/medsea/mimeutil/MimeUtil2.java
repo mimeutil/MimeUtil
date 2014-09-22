@@ -109,7 +109,7 @@ public class MimeUtil2 {
 	 */
 	public static final MimeType UNKNOWN_MIME_TYPE = new MimeType("application/octet-stream");
 
-	private static final Pattern mimeSplitter = Pattern.compile("[/;]++");
+	private static final Pattern MIME_SPLITTER = Pattern.compile("[/;]++");
 
 	// All mime types known to the utility. This is synchronised for multi-threaded use
 	// and ALL instances of MimeUtil2 share this list.
@@ -301,7 +301,7 @@ public class MimeUtil2 {
 		if (mimeType == null) {
 			throw new MimeException("Invalid MimeType [" + mimeType + "].");
 		}
-		String[] parts = mimeSplitter.split(mimeType);
+		String[] parts = MIME_SPLITTER.split(mimeType);
 		if (parts.length < 2) {
 			throw new MimeException("Invalid MimeType [" + mimeType + "].");
 		}

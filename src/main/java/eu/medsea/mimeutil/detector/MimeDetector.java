@@ -92,13 +92,13 @@ public abstract class MimeDetector {
 	 * You can override this method if you have any special one off initialisation to perform
 	 * such as allocating resources etc.
 	 */
-	public void init() {}
+	public abstract void init();
 
 	/**
 	 * You can override this method if for instance you allocated any resources in the init() method
 	 * that need to be closed or deallocated specially.
 	 */
-	public void delete() {}
+	public abstract void delete();
 
 	/**
 	 * Abstract method to be implement by concrete MimeDetector(s).

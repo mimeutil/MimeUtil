@@ -315,4 +315,10 @@ public class ExtensionMimeDetector extends MimeDetector {
 			throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("This MimeDetector does not support detection from byte arrays.");
 	}
+
+	@Override
+	public void init() {}
+
+	@Override
+	public void delete() {}
 }

@@ -35,7 +35,7 @@ class MimeDetectorRegistry {
 	 * This is the only pre-registerd MimeDetector and cannot be
 	 * de-registered or registered by your code
 	 */
-	private TextMimeDetector TextMimeDetector = new TextMimeDetector(1);
+	private TextMimeDetector textMimeDetector = new TextMimeDetector(1);
 
 
 	private Map mimeDetectors = new TreeMap();
@@ -77,7 +77,7 @@ class MimeDetectorRegistry {
 		Collection mimeTypes = new ArrayList();
 		try {
 			if(!EncodingGuesser.getSupportedEncodings().isEmpty()) {
-				mimeTypes = TextMimeDetector.getMimeTypes(data);
+				mimeTypes = textMimeDetector.getMimeTypes(data);
 			}
 		}catch(UnsupportedOperationException ignore) {
 			// The TextMimeDetector will throw this if it decides
@@ -104,7 +104,7 @@ class MimeDetectorRegistry {
 		Collection mimeTypes = new ArrayList();
 		try {
 			if(!EncodingGuesser.getSupportedEncodings().isEmpty()) {
-				mimeTypes = TextMimeDetector.getMimeTypes(fileName);
+				mimeTypes = textMimeDetector.getMimeTypes(fileName);
 			}
 		}catch(UnsupportedOperationException ignore) {
 			// The TextMimeDetector will throw this if it decides
@@ -129,7 +129,7 @@ class MimeDetectorRegistry {
 		Collection mimeTypes = new ArrayList();
 		try {
 			if(!EncodingGuesser.getSupportedEncodings().isEmpty()) {
-				mimeTypes = TextMimeDetector.getMimeTypes(file);
+				mimeTypes = textMimeDetector.getMimeTypes(file);
 			}
 		}catch(UnsupportedOperationException ignore) {
 			// The TextMimeDetector will throw this if it decides
@@ -154,7 +154,7 @@ class MimeDetectorRegistry {
 		Collection mimeTypes = new ArrayList();
 		try {
 			if(!EncodingGuesser.getSupportedEncodings().isEmpty()) {
-				mimeTypes = TextMimeDetector.getMimeTypes(in);
+				mimeTypes = textMimeDetector.getMimeTypes(in);
 			}
 		}catch(UnsupportedOperationException ignore) {
 			// The TextMimeDetector will throw this if it decides
@@ -179,7 +179,7 @@ class MimeDetectorRegistry {
 		Collection mimeTypes = new ArrayList();
 		try {
 			if(!EncodingGuesser.getSupportedEncodings().isEmpty()) {
-				mimeTypes = TextMimeDetector.getMimeTypes(url);
+				mimeTypes = textMimeDetector.getMimeTypes(url);
 			}
 		}catch(UnsupportedOperationException ignore) {
 			// The TextMimeDetector will throw this if it decides

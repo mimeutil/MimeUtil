@@ -542,4 +542,10 @@ public class MagicMimeMimeDetector extends MimeDetector {
 					+ lineNumber, e);
 		}
 	}
+
+	@Override
+	public void init() {}
+
+	@Override
+	public void delete() {}
 }
